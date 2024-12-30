@@ -29,7 +29,8 @@ INSTALLED_APPS = [
     'rest_framework',
 
     # Models
-    'userprofile'
+    'userprofile',
+    'messenger'
 ]
 
 MIDDLEWARE = [

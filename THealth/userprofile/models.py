@@ -52,5 +52,5 @@ class User(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ['email']  # другие поля, которые необходимо указать при создании
 
     def __str__(self):
-        return self.email
+        return self.username
 

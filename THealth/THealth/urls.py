@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -16,4 +16,6 @@ urlpatterns = [
     path('api/userlist/', UserAPIList.as_view(), name='user_register'),
     path('api/userupdate/<int:pk>/', UserAPIUpdate.as_view(), name='user_update'),
     path('api/userdelete/<int:pk>/', UserAPIDestroy.as_view(), name='user_delete'),
+
+    path('api/', include('messenger.urls'))
 ]
