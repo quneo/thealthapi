@@ -17,5 +17,6 @@ urlpatterns = [
     path('api/userupdate/<int:pk>/', UserAPIUpdate.as_view(), name='user_update'),
     path('api/userdelete/<int:pk>/', UserAPIDestroy.as_view(), name='user_delete'),
 
-    path('api/', include('messenger.urls'))
+    path('api/', include('messenger.urls')),
+    path('api/', include('feed.urls'))
 ]

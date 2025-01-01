@@ -30,7 +30,8 @@ INSTALLED_APPS = [
 
     # Models
     'userprofile',
-    'messenger'
+    'messenger',
+    'feed'
 ]
 
 MIDDLEWARE = [
