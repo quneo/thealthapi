@@ -54,3 +54,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.username
 
+
+class FriendShip(models.Model):
+    UserID = models.ForeignKey(User, on_delete=models.CASCADE, related_name='friendships_sent')
+    FriendID = models.ForeignKey(User, on_delete=models.CASCADE, related_name='friendships_received')
+

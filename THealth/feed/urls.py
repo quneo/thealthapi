@@ -8,7 +8,6 @@ router = DefaultRouter()
 router.register(r'posts', PostViewSet, basename='post')
 
 
-
 urlpatterns = [
     path('feed/', PostAPIList.as_view(), name='feed-list'),
     path('feed/post/', PostAPIList.as_view(), name='feed-post'),
