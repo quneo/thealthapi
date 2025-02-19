@@ -47,46 +47,29 @@ class RelationsViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'], url_path='subscribers')
     def get_subscribers(self, request):
         user = request.user
-
         subscribers = FriendShip.objects.filter(FriendID=user).exclude(UserID=user)
-
         outgoing_requests = FriendShip.objects.filter(UserID=user).values_list('FriendID', flat=True)
-
         subscribers = subscribers.exclude(UserID__in=outgoing_requests)
-
         subscribers_list = UserSerializer([friendship.UserID for friendship in subscribers], many=True)
         return Response(subscribers_list.data, status=status.HTTP_200_OK)
 
     @action(detail=False, methods=['get'], url_path='subscriptions')
     def get_subscriptions(self, request):
         user = request.user
-
         outgoing_requests = FriendShip.objects.filter(UserID=user).values_list('FriendID', flat=True)
-
         incoming_requests = FriendShip.objects.filter(FriendID=user).values_list('UserID', flat=True)
-
         outgoing_requests = outgoing_requests.exclude(FriendID__in=incoming_requests)
-
-        # Получаем объекты User по их ID
         users = User.objects.filter(id__in=outgoing_requests)
-
-        # Сериализация пользователей
         outgoing_requests_list = UserSerializer(users, many=True)
-
         return Response(outgoing_requests_list.data, status=status.HTTP_200_OK)
 
     @action(detail=False, methods=['get'], url_path='friends')
     def get_friends(self, request):
         user = request.user
-
         incoming_friendships = FriendShip.objects.filter(FriendID=user).values_list('UserID', flat=True)
-
         outgoing_friendships = FriendShip.objects.filter(UserID=user).values_list('FriendID', flat=True)
-
         mutual_friend_ids = set(incoming_friendships) & set(outgoing_friendships)
-
         mutual_friends = User.objects.filter(id__in=mutual_friend_ids)
-
         mutual_friends_list = UserSerializer(mutual_friends, many=True)
         return Response(mutual_friends_list.data, status=status.HTTP_200_OK)
 

@@ -36,7 +36,7 @@ class PostViewSet(viewsets.ModelViewSet):
     serializer_class = PostSerializer
     permission_classes = (IsAuthenticated,)
 
-    @action(detail=True, methods=['post'])
+    @action(detail=True, methods=['post'], url_path='like')
     def like(self, request, pk=None):
         post = self.get_object()
         user = request.user
@@ -58,7 +58,7 @@ class PostViewSet(viewsets.ModelViewSet):
         post.save()
         return Response({"message": "Лайк добавлен"}, status=status.HTTP_200_OK)
 
-    @action(detail=True, methods=['post'])
+    @action(detail=True, methods=['post'], url_path='dislike')
     def dislike(self, request, pk=None):
         post = self.get_object()
         user = request.user
