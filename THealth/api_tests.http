@@ -1,0 +1,20 @@
+
+POST http://localhost:8000/api/token/
+Content-Type: application/json
+
+{
+    "username": "new_user",
+    "password": "securepassword123",
+    "email": "new_user@gmail.com"
+}
+
+
+###
+POST http://localhost:8000/api/userlist/
+Content-Type: application/json
+
+{
+    "username": "new_user",
+    "password": "securepassword123",
+    "email": "new_user@gmail.com"
+}
