@@ -1,0 +1,19 @@
+networks:
+  thealth:
+
+services:
+  backend:
+    build:
+      context: ./thealth.backend
+    ports:
+      - '5000:5000'
+    networks:
+      - thealth
+
+  frontend:
+    build:
+      context: ./thealth.frontend
+    ports:
+      - '80:80'
+    networks:
+      - thealth
