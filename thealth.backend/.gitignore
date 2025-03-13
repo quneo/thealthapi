@@ -1,6 +1,5 @@
-# Default ignored files
+/.env/
 /shelf/
 /workspace.xml
 /.idea/
 /venv/
-/Thealth/.env
