@@ -1,0 +1,46 @@
+# Django
+*.log
+*.pot
+*.pyc
+__pycache__/
+local_settings.py
+db.sqlite3
+media/
+
+# Виртуальные среды
+.env
+venv/
+env/
+
+# IDE
+.idea/
+.vscode/
+
+# Остальное
+*.bak
+.DS_Store
+Thumbs.db
+.coverage
+.tox/
+.eggs/
+
+# Зависимости
+node_modules/
+package-lock.json
+
+# Сборка
+build/
+dist/
+
+# Окружение
+.env
+.env.local
+.env.development
+.env.production
+
+# Логи и кэш
+*.log
+*.tmp
+*.cache
+*.vscode/
+.idea/
