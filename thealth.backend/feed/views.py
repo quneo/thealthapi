@@ -9,7 +9,11 @@ from rest_framework import status
 from .models import Post, PostMark, Comment
 from .serializer import PostSerializer, CommentSerializer
 from .permissions import IsOwner, IsAdminOrOwner
+from kneed import KneeLocator
 
+import numpy as np
+from sentence_transformers import SentenceTransformer
+encoder = SentenceTransformer('sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2')
 
 # Create your views here.
 
@@ -112,3 +116,47 @@ class PostViewSet(viewsets.ModelViewSet):
             return Response({"message": "Комментарий удален"}, status=status.HTTP_204_NO_CONTENT)
 
         return Response({"error": "У вас нет прав для удаления этого комментария."}, status=status.HTTP_403_FORBIDDEN)
+    
+    @action(detail=False, methods=['get'], url_path='search')
+    def search_posts(self, request):
+        query = request.query_params.get('q', '')
+        if not query:
+            return Response({"error": "Пустой запрос"}, status=400)
+        
+        last_posts = Post.objects.order_by('-Date')[:100]
+        if not last_posts:
+            return Response({'results': []})
+        
+        query_embedding = encoder.encode(query)    
+        post_texts = [post.Content for post in last_posts]
+        post_embeddings = encoder.encode(post_texts)
+
+        similarities = np.dot(post_embeddings, query_embedding) / (
+            np.linalg.norm(post_embeddings, axis=1) * np.linalg.norm(query_embedding)
+        )
+
+        # Сортируем по убыванию релевантности
+        ranked_indices = np.argsort(-similarities)
+        sorted_similarities = similarities[ranked_indices]
+
+        # Находим точку "плеча" (где резко падает релевантность)
+        x = range(1, len(sorted_similarities) + 1)
+        kneedle = KneeLocator(
+            x, 
+            sorted_similarities, 
+            curve='convex', 
+            direction='decreasing'
+        )
+        elbow_index = kneedle.elbow or len(sorted_similarities)  # Если точка не найдена, берём все
+
+        # Отбираем только релевантные посты
+        relevant_posts = [last_posts[int(i)] for i in ranked_indices[:elbow_index]]
+
+        # Сериализуем результат
+        serializer = self.get_serializer(relevant_posts, many=True)
+        return Response({
+            "query": query,
+            "results": serializer.data,
+            "elbow_index": elbow_index,  # Индекс, после которого релевантность падает
+            "similarity_threshold": float(sorted_similarities[elbow_index - 1]) if elbow_index > 0 else 0.0
+        })
