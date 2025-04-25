@@ -1,37 +1,9 @@
 import React, { FC, JSX, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IPropsRegister } from '../../../common/types/auth';
-import { ThemeProvider,createTheme,TextField, Button, Typography, Box } from '@mui/material';
+import { TextField, Button, Typography, Box } from '@mui/material';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import { instance } from '../../../utils/Axios';
-
-const theme = createTheme({
-	palette: {
-		primary: { main: '#240935', light:  '#4f3a5d', dark: '#190625', contrastText: "#fff", },
-		secondary: { main: '#D3D3D3', light:  '#dbdbdb', dark: '#939393', },
-		info: { main: '#B3DDF2', light:  '#c2e3f4', dark: '#7d9aa9', },
-	},
-	components: {
-		MuiTypography: {styleOverrides: {
-				root: {textAlign: 'center', fontFamily: 'Montserrat', marginBottom: '0.5rem'},
-			},
-				defaultProps: {variant: 'body2'},
-		},
-		MuiButton: {styleOverrides: {
-				root: {width: '100%', marginBottom: '1rem'},
-			},
-				defaultProps: {variant: 'contained'},
-		},
-		MuiTextField: { styleOverrides: {
-				root: {marginBottom: '1rem', width: '100%'},
-			},
-				defaultProps: {variant: 'outlined', size: 'small', type: 'text'},
-		},
-	},
-
-})
-
-
 
 const RegisterPage: FC<IPropsRegister> = (props: IPropsRegister): JSX.Element => {
 	const {email, login, password, setEmail, setLogin, setPassword, setRepeatPassword} = props
@@ -62,7 +34,6 @@ const RegisterPage: FC<IPropsRegister> = (props: IPropsRegister): JSX.Element =>
 		};
 
 	return (
-		    <ThemeProvider theme={theme}>
 				<Box>
 					<KeyboardBackspaceIcon sx={{cursor: 'pointer'}} onClick={BackToLoginPage} aria-label="Назад"/>
 					<Typography variant='h6' >Создание аккаунта</Typography>
@@ -77,7 +48,6 @@ const RegisterPage: FC<IPropsRegister> = (props: IPropsRegister): JSX.Element =>
 				<Button onClick={(event) => {BackToLoginPage(); handleSubmit(event)}} color='secondary' sx={{mb:0.5}}>Создать аккаунт</Button>
 				
 				</Box>
-				</ThemeProvider>
 	);
 };
 

@@ -1,37 +1,9 @@
 import React, {FC, JSX, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { TextField, Button, Typography, createTheme, ThemeProvider, Box} from '@mui/material';
+import { TextField, Button, Typography, Box} from '@mui/material';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import { IPropsLogin } from '../../../common/types/auth';
 import { instance } from '../../../utils/Axios';
-
-
-
-const theme = createTheme({
-  palette: {
-    primary: { main: '#240935', light:  '#4f3a5d', dark: '#190625', contrastText: "#fff", },
-    secondary: { main: '#D3D3D3', light:  '#dbdbdb', dark: '#939393', },
-		info: { main: '#B3DDF2', light:  '#c2e3f4', dark: '#7d9aa9', },
-  },
-	components: {
-    MuiTypography: {styleOverrides: {
-        root: {textAlign: 'center', fontFamily: 'Montserrat', marginBottom: '0.5rem'},
-      },
-				defaultProps: {variant: 'body2'},
-    },
-	  MuiButton: {styleOverrides: {
-        root: {width: '100%', marginBottom: '1rem'},
-      },
-				defaultProps: {variant: 'contained'},
-    },
-    MuiTextField: { styleOverrides: {
-        root: {marginBottom: '1rem', width: '100%'},
-			},
-				defaultProps: {variant: 'outlined', size: 'small', type: 'text'},
-    },
-  },
-
-})
 
 
 type Mode = 'login' | 'email' | 'password'
@@ -76,7 +48,6 @@ const LoginPage: FC<IPropsLogin> = (props: IPropsLogin): JSX.Element => {
 	}
 
 	return (
-		    <ThemeProvider theme={theme}>
 					<Box>
 					{mode === 'password' && (
 					<>
@@ -84,7 +55,7 @@ const LoginPage: FC<IPropsLogin> = (props: IPropsLogin): JSX.Element => {
 					</>
 				)}
 
-						<Typography variant='h5' >Вход THealth </Typography>
+					<Typography variant='h5' >Вход THealth </Typography>
 
 					{mode === 'login' && (
 					<>
@@ -133,7 +104,6 @@ const LoginPage: FC<IPropsLogin> = (props: IPropsLogin): JSX.Element => {
 					<Button onClick={handleSubmit} type="submit" color='secondary' sx={{mb:0.5}}>Войти</Button>
 					<Button type="submit" onClick={handleCreateAccount} >Создать аккаунт</Button>
 			</Box>	
-	    </ThemeProvider>
 	);
 };
 

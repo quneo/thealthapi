@@ -3,7 +3,33 @@ import {useLocation } from 'react-router-dom';
 import LoginPage from './login';
 import RegisterPage from './register';
 import './style.scss';
-import Box from '@mui/material/Box';
+import {Box, createTheme, ThemeProvider} from '@mui/material';
+
+const theme = createTheme({
+	palette: {
+		primary: { main: '#240935', light:  '#4f3a5d', dark: '#190625', contrastText: "#fff", },
+		secondary: { main: '#D3D3D3', light:  '#dbdbdb', dark: '#939393', },
+		info: { main: '#B3DDF2', light:  '#c2e3f4', dark: '#7d9aa9', },
+	},
+	components: {
+		MuiTypography: {styleOverrides: {
+				root: {textAlign: 'center', fontFamily: 'Montserrat', marginBottom: '0.5rem'},
+			},
+				defaultProps: {variant: 'body2'},
+		},
+		MuiButton: {styleOverrides: {
+				root: {width: '100%', marginBottom: '1rem'},
+			},
+				defaultProps: {variant: 'contained'},
+		},
+		MuiTextField: { styleOverrides: {
+				root: {marginBottom: '1rem', width: '100%'},
+			},
+				defaultProps: {variant: 'outlined', size: 'small', type: 'text'},
+		},
+	},
+
+})
 
 
 const AuthRootComponent: FC = (): JSX.Element => {
@@ -54,12 +80,13 @@ const AuthRootComponent: FC = (): JSX.Element => {
 						borderRadius={5}
 						boxShadow={'5px 5px 10px #ccc'}
 					>
-
+					<ThemeProvider theme={theme}>
 					{location.pathname === '/login' 
 					? <LoginPage login={login} password={password} setLogin={setLogin} setPassword={setPassword} setEmail={setEmail}/> 
 					: location.pathname === '/register' 
 					? <RegisterPage email={email} login={login} password={password} repeatPassword={repeatPassword} setLogin={setLogin} setPassword={setPassword} setRepeatPassword={setRepeatPassword} setEmail={setEmail}/> 
 					: null}
+					</ThemeProvider>
 					</Box>
 				</form>
 		</Box>
