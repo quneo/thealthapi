@@ -2,6 +2,7 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 
+
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -28,6 +29,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
+
 
     # Frameworks
     'rest_framework',
@@ -35,10 +38,12 @@ INSTALLED_APPS = [
     # Models
     'userprofile',
     'messenger',
-    'feed'
+    'feed',
+    'coach'
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -71,6 +76,7 @@ WSGI_APPLICATION = 'THealth.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -81,7 +87,6 @@ DATABASES = {
         'PASSWORD': os.getenv('DB_PASSWORD'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -126,6 +131,34 @@ AUTH_USER_MODEL = 'userprofile.User'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-        #'rest_framework.authentication.SessionAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
     ]
 }
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Временная папка для обработки видео
+TEMP_VIDEO_DIR = os.path.join(BASE_DIR, 'temp_videos')
+
+# Создаем директории при старте
+os.makedirs(MEDIA_ROOT, exist_ok=True)
+os.makedirs(TEMP_VIDEO_DIR, exist_ok=True)
+
+# Лимиты на загрузку файлов
+DATA_UPLOAD_MAX_MEMORY_SIZE = 104857600  # 100MB
+FILE_UPLOAD_MAX_MEMORY_SIZE = 104857600
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://172.22.32.1:3000",
+]
+
+CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ALLOWED_METHODS = [
+    "GET",
+    "POST",
+    "PUT",
+    "DELETE",
+]
