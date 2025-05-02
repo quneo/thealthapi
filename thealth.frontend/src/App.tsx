@@ -1,6 +1,5 @@
-import React from 'react';
-import { Route, Routes } from 'react-router-dom';
-import AuthRootComponent from './components/auth';
+import { Route, Routes } from 'react-router-dom'
+import AuthRootComponent from './pages/auth'
 
 function App() {
 	return (
@@ -10,7 +9,7 @@ function App() {
 				<Route path='login' element={<AuthRootComponent />} />
 			</Routes>
 		</div>
-	);
-};
+	)
+}
 
-export default App;
+export default App
