@@ -21,16 +21,18 @@ export const FormInput: FC<Props> = ({
 	<Controller
 		name={config.name}
 		control={control}
-		render={({ field: { onChange, onBlur, value } }) => (
+		render={({ field: { onChange, onBlur, value, ref } }) => (
 			<TextField
 				className={styles.MyTextField}
 				label={config.label}
 				placeholder={config.placeholder}
 				error={!!error}
-				onBlur={onBlur}
-				onChange={onChange}
-				value={value}
 				helperText={error}
+				type={type}
+				onChange={onChange}
+				onBlur={onBlur}
+				value={value}
+				inputRef={ref}
 			/>
 		)}
 	/>

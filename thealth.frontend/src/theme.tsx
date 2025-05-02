@@ -15,16 +15,23 @@ const theme = createTheme({
 	components: {
 		MuiTypography: {
 			styleOverrides: {
-				root: {},
+				root: {
+					textAlign: 'center',
+					fontFamily: 'Montserrat',
+					marginBottom: '1rem',
+				},
 			},
 		},
 		MuiButton: {
 			styleOverrides: {
-				root: {},
+				root: { width: '100%', fontFamily: 'Montserrat', marginBottom: '1rem' },
 			},
 			defaultProps: { variant: 'contained' },
 		},
 		MuiTextField: {
+			styleOverrides: {
+				root: { width: '100%', fontFamily: 'Montserrat', marginBottom: '1rem' },
+			},
 			defaultProps: { variant: 'outlined', size: 'small' },
 		},
 	},

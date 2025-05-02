@@ -1,6 +1,6 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Button, Typography, Box } from '@mui/material'
+import { Typography, Box } from '@mui/material'
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace'
 import { instance } from '../../../utils/Axios'
 import { SubmitHandler } from 'react-hook-form'
@@ -22,10 +22,7 @@ const LoginPage: FC = () => {
 
 	const navigate = useNavigate()
 	const onContinue = () => setMode('password')
-	const onBack = () => {
-		setMode('login')
-		reset({ username: '', email: '' })
-	}
+	const onBack = () => setMode('login')
 	const onCreateAccount = () => navigate('/register')
 
 	const submit: SubmitHandler<LoginFormData> = async (data: LoginFormData) => {
@@ -35,6 +32,12 @@ const LoginPage: FC = () => {
 			console.error('Ошибка при отправке формы:', error)
 		}
 	}
+
+	useEffect(() => {
+		if (mode === 'login' || mode === 'email') {
+			reset({ username: '', email: '', password: '' })
+		}
+	}, [mode, reset])
 
 	return (
 		<Box className={styles.container}>
@@ -55,11 +58,7 @@ const LoginPage: FC = () => {
 					<ModeSwitcher mode={mode} setMode={setMode} />
 				)}
 
-				<Typography
-					sx={{ mt: -0.5, mb: 2 }}
-					className={styles.MyTypography}
-					variant='body2'
-				>
+				<Typography className={styles.MyTypography} variant='body2'>
 					{currentConfig.description}{' '}
 					{mode === 'password' && (
 						<>
@@ -79,7 +78,6 @@ const LoginPage: FC = () => {
 
 				{mode !== 'password' ? (
 					<MyButton
-						className={styles.MyButton}
 						sx={{ mb: 0.5 }}
 						onClick={onContinue}
 						disabled={!isDirty || !isValid}
@@ -90,17 +88,17 @@ const LoginPage: FC = () => {
 				) : (
 					<MyButton
 						sx={{ mb: 0.5 }}
-						className={styles.MyButton}
 						type='submit'
+						disabled={!isDirty || !isValid}
 						color='secondary'
 					>
 						Войти
 					</MyButton>
 				)}
 
-				<Button className={styles.MyButton} onClick={onCreateAccount}>
+				<MyButton sx={{ mb: 0.5 }} onClick={onCreateAccount}>
 					Создать аккаунт
-				</Button>
+				</MyButton>
 			</form>
 		</Box>
 	)

@@ -7,31 +7,27 @@
 	align-items: center;
 	flex-direction: column;
 	width: 225px;
-	height: 275px;
+	height: 325px;
 	max-width: 640px;
 	margin: auto;
-	padding: 40px;
+	padding: 30px 40px 30px 40px;
 	border-radius: 20px;
 	box-shadow: 5px 5px 10px #ccc;
 }
 
 .backIcon {
 	cursor: pointer;
-	margin-bottom: 16px;
+	margin-bottom: 0px;
 }
 
 .MyTypography {
 	text-align: center;
 	font-family: Montserrat;
-	margin-bottom: 1rem;
+	margin-bottom: 16px;
 }
 
 .MyTextField {
 	width: 100%;
 	font-family: Montserrat;
 	margin-bottom: 16px;
-}
-
-.MyButton {
-	width: 100%;
 }
