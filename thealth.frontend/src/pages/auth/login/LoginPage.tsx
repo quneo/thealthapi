@@ -5,12 +5,14 @@ import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace'
 import { instance } from '../../../utils/Axios'
 import { SubmitHandler } from 'react-hook-form'
 import styles from './LoginPage.module.scss'
-import { LoginFormData, Mode } from './interfaces'
-import { useLoginForm } from './useLoginForm'
-import { modeConfig } from './config'
+import { useLoginForm } from '../useLoginForm'
+import { modeConfig } from '../config'
 import { ModeSwitcher } from '../../../components/ModeSwitcher'
 import { FormInput } from '../../../components/FormInput'
 import MyButton from '../../../components/MyButton'
+import { AuthData, Mode } from '../interfaces'
+import { useAuth } from '../authContext'
+import { jwtDecode } from 'jwt-decode'
 
 const LoginPage: FC = () => {
 	const [mode, setMode] = useState<Mode>('login')
@@ -20,14 +22,31 @@ const LoginPage: FC = () => {
 	const emailValue = watch('email')
 	const currentConfig = modeConfig[mode]
 
+	interface JwtPayload {
+		user_id: number
+		username?: string
+		avatarUrl?: string
+		exp: number
+		iat: number
+	}
+
 	const navigate = useNavigate()
+	const { login } = useAuth()
 	const onContinue = () => setMode('password')
 	const onBack = () => setMode('login')
 	const onCreateAccount = () => navigate('/register')
 
-	const submit: SubmitHandler<LoginFormData> = async (data: LoginFormData) => {
+	const submit: SubmitHandler<AuthData> = async (data: AuthData) => {
 		try {
-			await instance.post('/api/token/', data)
+			const response = await instance.post('/api/token/', data)
+			const token = response.data.access || response.data.token
+			const decoded = jwtDecode<JwtPayload>(token)
+			const user = {
+				username: decoded.username || loginValue || 'User',
+				avatarUrl: decoded.avatarUrl || '',
+			}
+			login(token, user)
+			navigate('/profile')
 		} catch (error) {
 			console.error('Ошибка при отправке формы:', error)
 		}
@@ -51,7 +70,7 @@ const LoginPage: FC = () => {
 				)}
 
 				<Typography sx={{ mb: 2 }} className={styles.MyTypography} variant='h6'>
-					Вход THealth{' '}
+					Вход THealth
 				</Typography>
 
 				{(mode === 'login' || mode === 'email') && (
